@@ -55,3 +55,8 @@ if plotting:
             plt.plot(Test[i, 0], Test[i, 1], 'ob', fillstyle="none")
         else:
             plt.plot(Test[i, 0], Test[i, 1], 'or', fillstyle="none")
+    
+    # Marking the support vectors with a square
+    for idx in SVM['support_vector_index']:
+        plt.plot(Train[idx, 0], Train[idx, 1], 'sk')
+        
