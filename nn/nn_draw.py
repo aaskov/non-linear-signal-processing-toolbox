@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 
 
 def draw_circle(position, neuron_radius):
-    circle = plt.Circle(position, radius=neuron_radius, fill=True)
+    circle = plt.Circle(position, radius=neuron_radius, fill=True, fc='Black')
     plt.gca().add_patch(circle)
 
 
 def draw_line(position1, position2):
     line = plt.Line2D((position1[0], position2[0]),
-                      (position1[1], position2[1]))
+                      (position1[1], position2[1]), 
+                      color='Black', 
+                      linewidth=0.8)
     plt.gca().add_line(line)
 
 
@@ -18,7 +20,7 @@ def draw_network(layer, title='Neural network'):
     neuron_distance = 3
     neuron_radius = 0.2
     layer_distance = 4
-    padding = 1.0
+    padding = 1.5
 
     network_height = max(layer) + 1  # add 1 for bias neuron
     network_width = len(layer)
@@ -30,10 +32,16 @@ def draw_network(layer, title='Neural network'):
     xmax = (network_width-1)*layer_distance + padding
     ymin = -padding
     ymax = (network_height-1)*neuron_distance + padding
-    plt.figure()
+    
+    fig = plt.figure()
+    fig.suptitle(title)
     plt.axis('scaled')
-    plt.title(title)
-    plt.axis([xmin, xmax, ymin, ymax])
+    
+    ax = fig.add_subplot(111)
+    ax.axis([xmin, xmax, ymin, ymax])
+    ax.set_xlabel('Layers')
+    plt.xticks(np.arange(network_width)*layer_distance, 
+               np.arange(network_width))
 
     neurons = []
 
@@ -67,15 +75,21 @@ def draw_network(layer, title='Neural network'):
     # Draw neurons
     for level in neurons:
         for neuron in level:
-            draw_circle(neuron, neuron_radius)
+            if neuron == level[0]:
+                # Bias            
+                draw_circle(neuron, neuron_radius)
+                if level is not neurons[network_width-1]:
+                    ax.text(neuron[0]-0.2, neuron[1]-0.7, r'Bias', fontsize=10)
+            else:
+                draw_circle(neuron, neuron_radius)
 
     # Finish
     plt.draw()
     plt.show()
 
-if __name__ is "__main__":
+if __name__ == "__main__":
 
     # Define the layers (without bias, and no output bias)
-    layer = [2, 3, 3, 2]
+    layer = [2, 2, 1]
 
     draw_network(layer)
