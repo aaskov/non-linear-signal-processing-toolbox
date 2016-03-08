@@ -1,1 +1,1 @@
-__all__ = ["nn", "nn_cost", "nn_diagram", "nn_forward", "nn_gradient", "nn_norm", "data_random", "data_sunspot", "main"]
+__all__ = ["nn_diagram", "data_random"]
