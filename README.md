@@ -6,4 +6,4 @@ Sandbox for non-linear signal processing in Python (2.7) written for a better un
 Based on the Numpy library for Python. Still in development.
 
 ## Features
-Gaussian Process, Hidden Markov Model, Neural Network (ANN), Support Vector Machine (SVM)
+Gaussian Process (GP), Hidden Markov Model (HMM), Neural Network (ANN), Support Vector Machine (SVM)
