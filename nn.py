@@ -5,11 +5,11 @@ Neural network - nsp
 from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
-from nn_gradient import nn_gradient
-from nn_cost import nn_cost_quad
-from nn_norm import two_norm
-from nn_forward import nn_forward
-from data_sunspot import get_sunspot
+from nn.nn_gradient import nn_gradient
+from nn.nn_cost import nn_cost_quad
+from nn.nn_norm import two_norm
+from nn.nn_forward import nn_forward
+from nn.data_sunspot import get_sunspot
 
 
 class NeuralNetwork():
