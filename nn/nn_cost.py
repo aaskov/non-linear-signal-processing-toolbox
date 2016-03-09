@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Distributed memory
+Neural network - nsp
 """
 import numpy as np
 from nn_forward import nn_forward
