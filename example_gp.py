@@ -82,7 +82,7 @@ if __name__ == "__main__":
     error_LS = np.mean(np.power(best_pred_leastsq - Test_t, 2))/empirical_var
     
     """
-    Plotting
+    Plot nr 1
     
     A plot of the (unseen) test data set with the best prediction results 
     based on the log-likelihood or the least-squares  measure.
