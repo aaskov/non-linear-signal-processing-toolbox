@@ -1,1 +1,1 @@
-__all__ = ["sunspot"]
+__all__ = ["data_sunspot", "data_synthetic", "data_random"]
