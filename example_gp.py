@@ -11,6 +11,8 @@ from data.data_sunspot import get_sunspot, data_split
 #%%
 
 if __name__ == "__main__":
+    print 'This file contains the Gaussian Process example'    
+    
     # Parameters and settings
     N_SIG2 = 20
     N_BETA = 20

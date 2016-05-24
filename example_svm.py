@@ -1,62 +1,72 @@
 # -*- coding: utf-8 -*-
 import matplotlib.pyplot as plt
-from data.synthetic import get_svm_synthetic
+from data.data_synthetic import get_svm_synthetic
 from svm.svm_train import svm_train
 from svm.svm_classify import svm_classify
 
-# Parameters and settings
-plotting = True
+plt.rcParams['figure.figsize'] = (6, 6)  # Matplot config
 
-# Load synthetic data set
-N = 200
-Train, train_t, Test, test_t = get_svm_synthetic(N)
+#%%
 
-# Plot the data set
-if plotting:
+if __name__ == "__main__":
+    print 'This file contains the SVM example'   
+    
+    # Parameters and setup
+    sigma = 1  # For SVM
+    C = 1000  # For SVM
+    N_data_points = 200 # For data
+    
+    
+    # Load synthetic data set
+    train_input, train_target, test_input, test_target = get_svm_synthetic(N_data_points)
+    
     """
+    Plot the data set
+    
     This figure shows the synthetic 2-class dataset. Notice how its impossible
-    to formulate a linear discriminant between the two classes.
+    to formulate a linear discriminant between the two classes (remark: you can
+    use a little data-transformation trick, but we forget this here). 
     """
     plt.figure(1)
-    plt.plot(Train[0:N, 0], Train[0:N, 1], '.b', label="Class 1")
-    plt.plot(Train[N:, 0], Train[N:, 1], '.r', label="Class 2")
+    plt.plot(train_input[0:N_data_points, 0], train_input[0:N_data_points, 1], '.b', label="Class 1")
+    plt.plot(train_input[N_data_points:, 0], train_input[N_data_points:, 1], '.r', label="Class 2")
     plt.xlabel('x1')
     plt.ylabel('x2')
     plt.legend()
     plt.grid('on')
-
-# Train the SVM with fixed sigma and C
-sigma = 1
-C = 1000
-SVM = svm_train(Train, train_t, sigma, C)
-
-# Classify the test set
-prediction = svm_classify(Test, SVM)
-
-# Plot the result
-if plotting:
+    plt.title('Training dataset')
+    
+    
+    # Train the SVM with fixed sigma and C
+    SVM = svm_train(train_input, train_target, sigma, C)
+    
+    # Classify the test set
+    prediction = svm_classify(test_input, SVM)
+    
     """
+    Plot the result
+    
     This second figure shows the test data set and the predicted labels for
-    each observation. As a result of the SVM, we are able to separate the two
+    each observation. With a SVM classifier we are able to separate the two
     classes (by a hyperplane).
     """
     plt.figure(2)
-    plt.plot(Test[0:N, 0], Test[0:N, 1], '.b', label="Class 1")
-    plt.plot(Test[N:, 0], Test[N:, 1], '.r', label="Class 2")
+    plt.plot(test_input[0:N_data_points, 0], test_input[0:N_data_points, 1], '.b', label="Class 1")
+    plt.plot(test_input[N_data_points:, 0], test_input[N_data_points:, 1], '.r', label="Class 2")
     plt.xlabel('x1')
     plt.ylabel('x2')
     plt.legend()
     plt.grid('on')
-    plt.title('SVM Prediction on test set')
-
+    plt.title('SVM Prediction on testset')
+    
     # Giving each data point the prediction label (as a specific color ring)
     for i in range(len(prediction)):
         if prediction[i] < 0:
-            plt.plot(Test[i, 0], Test[i, 1], 'ob', fillstyle="none")
+            plt.plot(test_input[i, 0], test_input[i, 1], 'ob', fillstyle="none")
         else:
-            plt.plot(Test[i, 0], Test[i, 1], 'or', fillstyle="none")
+            plt.plot(test_input[i, 0], test_input[i, 1], 'or', fillstyle="none")
     
     # Marking the support vectors with a square
     for idx in SVM['support_vector_index']:
-        plt.plot(Train[idx, 0], Train[idx, 1], 'sk')
+        plt.plot(train_input[idx, 0], train_input[idx, 1], 'sk')
         
