@@ -6,7 +6,7 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from nn.main import NeuralNetwork
-from data.data_sunspot import get_sunspot
+from data.data_sunspot import get_sunspot, data_split
 
 
 #%%
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     print 'This file contains the Neural Network example'
     
     # Parameters and settings
-    data_lag = 2
+    data_lag = 3
     N_input_units = data_lag
     N_hidden_units = 8
     N_output_units = 1
@@ -23,12 +23,13 @@ if __name__ == "__main__":
     net_best_err = 9e9
     
     # Load the Sunspot dataset
-    tr_in, tr_tar, te_in, te_tar = get_sunspot(data_lag)
+    year, reading, lag_matrix = get_sunspot(data_lag)
+    train, test = data_split(lag_matrix)
 
     # Repeat network fit to find the one with the lowest error
     net_best = None
     for net_fit_count in range(net_fit_repeat):
-        net = NeuralNetwork(structure=(N_input_units, N_hidden_units, N_output_units), train_input=tr_in, train_target=tr_tar, test_input=te_in, test_target=te_tar, max_iter=net_max_iter)
+        net = NeuralNetwork(structure=(N_input_units-1, N_hidden_units, N_output_units), train_input=train[:, 1:], train_target=train[:, 0], test_input=test[:, 1:], test_target=test[:, 0], max_iter=net_max_iter)
         net.train()
 
         if net.e_test[-1] < net_best_err:

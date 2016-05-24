@@ -24,8 +24,8 @@ if __name__ == "__main__":
     
     # Load the sunspot dataset 
     lag = 5
-    year, reading, L = get_sunspot(lag)
-    empirical_var = np.var(L[:, 0])  # Some statics (for later use)
+    year, reading, lag_matrix = get_sunspot(lag)
+    empirical_var = np.var(lag_matrix[:, 0])  # Some statics (for later use)
     
     # Split data set into a train/test set
     Train, Test = data_split(L)

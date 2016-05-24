@@ -20,7 +20,7 @@ def get_sunspot(lag=2):
     """
     
     # Open and read in the data-file
-    with open('data\sunspot.dat', 'r') as data:
+    with open('data/sunspot.dat', 'r') as data:
         read_data = data.read()
     
     # Pre-process the data set
