@@ -11,13 +11,13 @@ Based on the Numpy package for Python. Still in development.
 
 ### Example Gaussian Process (GP)
 This is a timeseries prediction example using a Gaussian Process.
-<p algin="center">
+<p align="center">
 <img src="https://github.com/aaskov/nsp/blob/master/images/gp_example.png?raw=true" width="80%"/>
 </p>
 
 ### Example Support Vector Machine (SVM)
 This is a classification example using a Support Vector Machine
-<p algin="center">
+<p align="center">
 <img src="https://github.com/aaskov/nsp/blob/master/images/svm_example.png?raw=true" width="80%"/>
 </p>
 
