@@ -28,13 +28,16 @@ if __name__ == "__main__":
     empirical_var = np.var(lag_matrix[:, 0])  # Some statics (for later use)
     
     # Split data set into a train/test set
-    Train, Test = data_split(L)
-    Train_t, Test_t = data_split(reading[lag:])
+    train, test = data_split(lag_matrix)
+    train_input = train[:,1:]
+    train_target = train[:,0]
+    test_input = test[:,1:]
+    test_target = test[:,0]
     
     # Construct kernels
-    K_train_train = kernel(Train.T, Train.T)
-    K_test_train = kernel(Test.T, Train.T)
-    K_test_test = kernel(Test.T, Test.T)
+    K_train_train = kernel(train_input.T, train_input.T)
+    K_test_train = kernel(test_input.T, train_input.T)
+    K_test_test = kernel(test_input.T, test_input.T)
     
     """
     Initialize the algorihm.
@@ -57,7 +60,7 @@ if __name__ == "__main__":
             beta = beta_array[iter_beta]
     
             # Calculate the log-likelihood for this setup
-            log_test, std_test, prediction = gp_loglik(K_test_test, K_test_train, K_train_train, Test_t, Train_t, sig2, beta)
+            log_test, std_test, prediction = gp_loglik(K_test_test, K_test_train, K_train_train, test_target, train_target, sig2, beta)
     
             # Store the log-likelihood result
             log_array[iter_sig, iter_beta] = log_test
@@ -69,7 +72,7 @@ if __name__ == "__main__":
                 best_sig2 = sig2
     
             # Store the least-square result
-            ls = np.mean(np.power(prediction - Test_t, 2))/empirical_var
+            ls = np.mean(np.power(prediction - test_target, 2))/empirical_var
             leastsq_array[iter_sig, iter_beta] = ls
             if ls < best_leastsq:
                 best_leastsq = ls
@@ -78,25 +81,26 @@ if __name__ == "__main__":
                 best_sig2_ls = sig2
     
     # Error meassure of the best prediction
-    error_LL = np.mean(np.power(best_pred_loglike - Test_t, 2))/empirical_var
-    error_LS = np.mean(np.power(best_pred_leastsq - Test_t, 2))/empirical_var
+    error_LL = np.mean(np.power(best_pred_loglike - test_target, 2))/empirical_var
+    error_LS = np.mean(np.power(best_pred_leastsq - test_target, 2))/empirical_var
     
     """
     Plot nr 1
     
     A plot of the (unseen) test data set with the best prediction results 
-    based on the log-likelihood or the least-squares  measure.
+    based on the log-likelihood or the least-squares measure.
     """
-    axis = year[len(Train):]
+    axis = year[len(train_input):]
     plt.figure(1)
-    plt.plot(axis, Test_t, 'r-', label="Test data")
-    plt.plot(axis, best_pred_loglike, 'bo-', label="Best LL")
-    plt.plot(axis, best_pred_leastsq, 'go-', label="Best LS")
+    plt.plot(axis, test_target, 'b-', label="Test data")
+    plt.plot(axis, best_pred_loglike, 'mo-', label="Best log-likelihood")
+    plt.plot(axis, best_pred_leastsq, 'co-', label="Best least-square")
     plt.grid('on')
     plt.xlabel('Year')
     plt.ylabel('Sunspot intensity')
-    plt.title('Test error LL: '+str(error_LL)+' Test error LS: '+str(error_LS))
-    plt.legend()
+    title_text = 'Test error LL: %0.2f, Test error LS: %0.2f' % (error_LL, error_LS)
+    plt.title(title_text)
+    plt.legend(loc='upper left')
 
     
     """
@@ -107,11 +111,12 @@ if __name__ == "__main__":
     times the stand. diviation. for each prediction.
     """
     plt.figure(2)
-    plt.plot(axis, Test_t, 'r-', label="Test data")
-    plt.plot(axis, best_pred_loglike, 'bo', label="Best prediction")
-    plt.plot(axis, best_pred_loglike+2*best_std_pred, 'b:', label="Conf. int.")
-    plt.plot(axis, best_pred_loglike-2*best_std_pred, 'b:')
+    plt.plot(axis, test_target, 'b-', label="Test data")
+    plt.plot(axis, best_pred_loglike, 'mo', label="Best prediction")
+    plt.plot(axis, best_pred_loglike+2*best_std_pred, 'm:', label="95% conf. int.")
+    plt.plot(axis, best_pred_loglike-2*best_std_pred, 'm:')
     plt.grid('on')
     plt.xlabel('Year')
     plt.ylabel('Sunspot intensity')
-    plt.legend()
+    plt.title('Prediction on test set with conf. interval')
+    plt.legend(loc='upper left')

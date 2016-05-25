@@ -28,8 +28,8 @@ if __name__ == "__main__":
     use a little data-transformation trick, but we forget this here). 
     """
     plt.figure(1)
-    plt.plot(train_input[0:N_data_points, 0], train_input[0:N_data_points, 1], '.b', label="Class 1")
-    plt.plot(train_input[N_data_points:, 0], train_input[N_data_points:, 1], '.r', label="Class 2")
+    plt.plot(train_input[0:N_data_points, 0], train_input[0:N_data_points, 1], '.m', label="Class 1")
+    plt.plot(train_input[N_data_points:, 0], train_input[N_data_points:, 1], '.c', label="Class 2")
     plt.xlabel('x1')
     plt.ylabel('x2')
     plt.legend()
@@ -51,22 +51,22 @@ if __name__ == "__main__":
     classes (by a hyperplane).
     """
     plt.figure(2)
-    plt.plot(test_input[0:N_data_points, 0], test_input[0:N_data_points, 1], '.b', label="Class 1")
-    plt.plot(test_input[N_data_points:, 0], test_input[N_data_points:, 1], '.r', label="Class 2")
+    plt.plot(test_input[0:N_data_points, 0], test_input[0:N_data_points, 1], '.m', label="Class 1")
+    plt.plot(test_input[N_data_points:, 0], test_input[N_data_points:, 1], '.c', label="Class 2")
+    plt.legend()
     plt.xlabel('x1')
     plt.ylabel('x2')
-    plt.legend()
     plt.grid('on')
-    plt.title('SVM Prediction on testset')
+    plt.title('Prediction on testset (support vector shown as triangle)')
     
     # Giving each data point the prediction label (as a specific color ring)
     for i in range(len(prediction)):
         if prediction[i] < 0:
-            plt.plot(test_input[i, 0], test_input[i, 1], 'ob', fillstyle="none")
+            plt.plot(test_input[i, 0], test_input[i, 1], 'om', fillstyle="none")
         else:
-            plt.plot(test_input[i, 0], test_input[i, 1], 'or', fillstyle="none")
+            plt.plot(test_input[i, 0], test_input[i, 1], 'oc', fillstyle="none")
     
     # Marking the support vectors with a square
     for idx in SVM['support_vector_index']:
-        plt.plot(train_input[idx, 0], train_input[idx, 1], 'sk')
+        plt.plot(train_input[idx, 0], train_input[idx, 1], 'b^')
         
